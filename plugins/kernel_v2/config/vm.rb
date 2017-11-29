@@ -639,7 +639,8 @@ module VagrantPlugins
           next if options[:disabled]
 
           guestpath = Pathname.new(options[:guestpath]) if options[:guestpath]
-          hostpath  = Pathname.new(options[:hostpath]).expand_path(machine.env.root_path)
+          synced_path = Pathname.new(options[:hostpath])
+          hostpath  = synced_path.absolute? ? synced_path : synced_path.expand_path(machine.env.root_path)
 
           if guestpath.to_s != ""
             if guestpath.relative? && guestpath.to_s !~ /^\w+:/
